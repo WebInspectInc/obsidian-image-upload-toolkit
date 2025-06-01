@@ -108,6 +108,9 @@ export default class PublishSettingTab extends PluginSettingTab {
             case ImageStore.CLOUDFLARE_R2.id:
                 this.drawR2Setting(parentEL);
                 break;
+            case ImageStore.DIGITAL_OCEAN.id:
+                this.drawDigitalOceanSetting(parentEL);
+                break;
             default:
                 throw new Error(
                     "Should not reach here!"
@@ -511,4 +514,60 @@ export default class PublishSettingTab extends PluginSettingTab {
                     .setValue(this.plugin.settings.r2Setting.customDomainName)
                     .onChange(value => this.plugin.settings.r2Setting.customDomainName = value));
     }
+
+
+    private drawDigitalOceanSetting(parentEL: HTMLDivElement) {
+      // Add AWS S3 configuration section
+      new Setting(parentEL)
+        .setName('Digital Ocean Access Key ID')
+        .setDesc('Your Digital Ocean access key ID')
+        .addText(text => text
+          .setPlaceholder('Enter your access key ID')
+          .setValue(this.plugin.settings.DOSetting?.accessKeyId || '')
+          .onChange(value => this.plugin.settings.DOSetting.accessKeyId = value
+          ));
+
+      new Setting(parentEL)
+        .setName('Digital Ocean Secret Access Key')
+        .setDesc('Your Digital Ocean secret access key')
+        .addText(text => text
+          .setPlaceholder('Enter your secret access key')
+          .setValue(this.plugin.settings.DOSetting?.secretAccessKey || '')
+          .onChange(value => this.plugin.settings.DOSetting.secretAccessKey = value));
+
+      new Setting(parentEL)
+        .setName('Digital Ocean endpoint')
+        .setDesc('Your Digital Ocean endpoint')
+        .addText(text => text
+          .setPlaceholder('Enter your endpoint')
+          .setValue(this.plugin.settings.DOSetting?.endpoint || '')
+          .onChange(value => this.plugin.settings.DOSetting.endpoint = value));
+
+      new Setting(parentEL)
+        .setName('Digital Ocean Bucket Name')
+        .setDesc('Your Digital Ocean bucket name')
+        .addText(text => text
+          .setPlaceholder('Enter your bucket name')
+          .setValue(this.plugin.settings.DOSetting?.bucketName || '')
+          .onChange(value => this.plugin.settings.DOSetting.bucketName = value));
+      new Setting(parentEL)
+        .setName("Target Path")
+        .setDesc("The path to store image.\nSupport {year} {mon} {day} {random} {filename} vars. For example, /{year}/{mon}/{day}/{filename} with uploading pic.jpg, it will store as /2023/06/08/pic.jpg.")
+        .addText(text =>
+          text
+            .setPlaceholder("Enter path")
+            .setValue(this.plugin.settings.DOSetting.path)
+            .onChange(value => this.plugin.settings.DOSetting.path = value))
+
+      //custom domain
+      new Setting(parentEL)
+        .setName("Custom Domain Name")
+        .setDesc("If the custom domain name is example.com, you can use https://example.com/pic.jpg to access pic.img.")
+        .addText(text =>
+          text
+            .setPlaceholder("Enter path")
+            .setValue(this.plugin.settings.DOSetting.customDomainName)
+            .onChange(value => this.plugin.settings.DOSetting.customDomainName = value))
+    }
+
 }

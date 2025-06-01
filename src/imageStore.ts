@@ -45,6 +45,11 @@ export default class ImageStore {
         "Cloudflare R2"
     )
 
+    static readonly DIGITAL_OCEAN = new ImageStore(
+      	"DIGITAL_OCEAN",
+      	"Digital Ocean Spaces"
+    )
+
     private constructor(readonly id: string, readonly description: string) {
         ImageStore.values.push(this)
     }
